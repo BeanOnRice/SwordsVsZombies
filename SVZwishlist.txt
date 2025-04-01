@@ -1,0 +1,54 @@
+Procedurally generated map(background/floor)---------------MAIN
+-4 large sections(winter, lava(does damage), wetland, desert)
+	-each section has random little decorations(small branch etc etc.) at random places
+		-lava lava is predetermined
+		-decorations are another layer
+			-coded with random chance to choose decoration, heavily weighted towards nothing(?)
+
+Swordsman(Player)--------------SWORDSMAN
+-Drawn standing
+	-Anim:
+		-walking
+			-head tilts up or down depending on velocity
+		-idle
+		-slash(simple forward slash)
+	-tint red on damage(?)
+-has sword
+	-on attack simple white line as slash (parallel to player)
+	-attack button works on input(spammable)(hold down only inputs once)
+		-stops player movement during slash
+		-on hit pauses everything briefly
+		-sound effect
+		-slash direction towards direction faced(LEFT OR RIGHT UNLESS CURRENTLY MOVING)
+-HP
+	-loss on hit(loss depends on enemy)
+	-half health per sec on lava contact
+	-at 0 game over screen
+-STAY centered(everything else moves on movement)NO, camera will be used
+
+Score -----------------------------------MAIN
+-up per second
+-slight up per power up
+-big up per zombie kill
+-HUGE up per treasure collected
+
+zombie (varied type depending on area)-------------ZOMBIE
+-drawn standing
+-always moving towards player
+-on death pauses anim briefly then poof
+	-sound effect
+-spawn from edge of screen
+
+Pause menu-------------------PAUSEMENU
+-"Paused" text
+-pauses everything else until resumed
+-blurs everything else out into pause, unblurs rapidly when unpausing
+
+power ups -up to three at a time spawned in entire map-------------POWERUPS
+-healing on hit
+-dmg up
+-speed up
+
+treasure -up to four at a time spawned per biome-----------------TREASURE
+-big score up!!!!
+	-bonus for area(none on base difficulty up to double on lava)
