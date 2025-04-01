@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://do0ov2c2l2uo3"]
+
+[node name="Node" type="Node"]
+process_mode = 3
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MenuBar" type="MenuBar" parent="Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

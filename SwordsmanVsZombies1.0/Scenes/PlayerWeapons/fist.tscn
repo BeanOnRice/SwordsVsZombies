@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3 uid="uid://bntat6vyp33nl"]
+
+[ext_resource type="Script" path="res://Scenes/PlayerWeapons/fist.gd" id="1_7m772"]
+[ext_resource type="Texture2D" uid="uid://nw5xg1ygj4tw" path="res://Art/Player/Weapons/Fist.png" id="2_kdc2d"]
+[ext_resource type="Shape2D" uid="uid://pxfyybxhkxi4" path="res://Scenes/PlayerWeapons/FistHitbox.tres" id="3_niu74"]
+[ext_resource type="AudioStream" uid="uid://djh7cqieoixqe" path="res://Art/SoundEffects/Swing.wav" id="4_iyf7q"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_81dkd"]
+atlas = ExtResource("2_kdc2d")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wqh2h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_81dkd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Fist" type="StaticBody2D"]
+z_index = 1
+y_sort_enabled = true
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_7m772")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 2
+sprite_frames = SubResource("SpriteFrames_wqh2h")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(8, -2)
+shape = ExtResource("3_niu74")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(8, -2)
+shape = ExtResource("3_niu74")
+
+[node name="AttackSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_iyf7q")
+
+[node name="HitSound" type="AudioStreamPlayer" parent="."]

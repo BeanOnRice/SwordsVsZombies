@@ -1,0 +1,149 @@
+[gd_scene load_steps=6 format=3 uid="uid://dce66xu6vckb3"]
+
+[ext_resource type="PackedScene" uid="uid://b8wemumw2e23l" path="res://Scenes/Player/slime_swordsman.tscn" id="1_w662b"]
+[ext_resource type="PackedScene" uid="uid://c2imyg2qbx4l3" path="res://Scenes/Spawners/zombie_spawner.tscn" id="2_0xnk6"]
+[ext_resource type="PackedScene" uid="uid://cltxllj56ouw" path="res://Scenes/Maps/endless_mode_grass_map.tscn" id="2_3efxl"]
+
+[sub_resource type="GDScript" id="GDScript_pfpe0"]
+script/source = "extends Node2D
+
+var character_chosen = null # allows dynamic character choosing based on what is chosen in character select
+@export var slime_character: PackedScene # 0
+# UPDATE _CHARACTER_CHOSEN_SETTER WHEN ADDING MORE CHARACTERS
+
+@export var zombie_spawner: PackedScene
+
+var map_chosen = null # same as character_chosen but for maps
+@export var endless_mode_grass_map: PackedScene # 0
+# UPDATE _CHARACTER_CHOSEN_SETTER WHEN ADDING MORE CHARACTERS
+
+const HOW_MANY_NEED_TO_BE_READY: int = 2 #amount of things that need to be ready before game start
+var ready_to_start: int = 0
+signal loading_finished
+
+func _ready() -> void:
+	PlayerStats.game_mode = 0
+	PlayerStats.spawn_timer = 3.0
+	_game_start()
+	
+
+@warning_ignore(\"unused_parameter\")
+func _process(delta: float) -> void:
+	get_node(\"Camera2D\").position = Vector2(PlayerStats.player_position)
+	_children_ready_signal_receiver()
+	_children_ready_signal_receiver()
+		#same for these: #I'll just put a collision on map edge for layers 1 and 2
+		#zombieSpawner #this one still needs special solution
+
+# called by main_menu in main menu mode and game over mode via signal to program_director
+func _game_start() -> void:
+	#Insert load screen##################################
+	get_tree().call_group(\"delete_at_game_start\", \"queue_free()\")
+	# character load
+	get_tree().set_pause(true)
+	_character_chosen_setter()
+	character_chosen.instantiate()
+	add_child(character_chosen.instantiate())
+	#get_node(\"Swordsman\").ready.connect(self._children_ready_signal_receiver)
+	get_node(\"Swordsman\").add_to_group(\"delete_at_game_start\")
+	# map load
+	_map_chosen_setter()
+	map_chosen.instantiate()
+	add_child(map_chosen.instantiate())
+	#get_node(\"Map\").ready.connect(self._children_ready_signal_receiver)
+	get_node(\"Swordsman\").add_to_group(\"delete_at_game_start\")
+	#await loading_finished # _children_ready func doesn't work because children emit ready signal before being connected in current setup
+	# zombie spawner load
+	if PlayerStats.game_mode == 0:
+		zombie_spawner.instantiate()
+		add_child(zombie_spawner.instantiate())
+		#get_node(\"ZombieSpawner\").ready.connect(self._children_ready_signal_receiver)
+		get_node(\"ZombieSpawner\").add_to_group(\"delete_at_game_start\")
+		_rand_zombie_spawn_location()
+	#Remove load screen##############################
+	get_tree().set_pause(false)
+	get_node(\"ScoreTimer\").start()
+	#make pause_menu unpausable
+
+func _game_over() -> void:
+	get_node(\"ScoreTimer\").stop()
+	#signal to program_director to bring out game over screen
+	#add score to wherever it belongs in the highscore linked list
+	#make pause_menu pausable
+	get_tree().set_pause(true)
+
+
+# sets _game_start to instantiate chosen character (singleton because then we can enable character specific interactions more easily)
+func _character_chosen_setter() -> void:
+	var x = PlayerStats.player_character
+	match x:
+		0:
+			character_chosen = slime_character
+		_:
+			print(\"ERROR: NO CHARACTER CHOSEN\")
+
+func _map_chosen_setter() -> void:
+	var x = PlayerStats.map
+	match x:
+		0:
+			map_chosen = endless_mode_grass_map
+		_:
+			print(\"ERROR: NO MAP CHOSEN\")
+
+#receives ready signal from children
+##BROKEN
+func _children_ready_signal_receiver() -> void:
+	ready_to_start += 1
+	if ready_to_start == HOW_MANY_NEED_TO_BE_READY:
+		emit_signal(\"loading_finished\")
+
+func _rand_zombie_spawn_location() -> void:
+	# puts the zombie spawner somewhere on the edge of the screen
+	get_node(\"ZombieSpawner\").set_global_position(rand_point_on_viewport_edge())
+	# check for invalid spawn location
+	if get_node(\"Area2D\").has_overlapping_bodies():
+		print(\"game_director.tscn _rand_zombie_spawn_location(): spawner overlap!\")
+		_rand_zombie_spawn_location()
+		print(\"game_director.tscn _rand_zombie_spawn_location(): line after function is reset\")
+	else:
+		get_node(\"ZombieSpawner\")._spawn()
+		get_node(\"SpawnTimer\").start(PlayerStats.spawn_timer)
+
+func rand_point_on_viewport_edge() -> Vector2:
+	return Vector2(0.0, 0.0)
+
+# knocks back player based on signal received from enemy's handler
+func _on_zombie_knock_this_player_back(dir: Vector2, knockback: int) -> void:
+	get_node(\"Swordsman\")._start_knock_back(dir, knockback)
+
+func _on_score_timer_timeout() -> void:
+	PlayerStats.score += 3
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_peqwb"]
+radius = 121.511
+
+[node name="GameDirector" type="Node2D" groups=["delete_at_game_start"]]
+process_mode = 3
+y_sort_enabled = true
+script = SubResource("GDScript_pfpe0")
+slime_character = ExtResource("1_w662b")
+zombie_spawner = ExtResource("2_0xnk6")
+endless_mode_grass_map = ExtResource("2_3efxl")
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+editor_draw_drag_margin = true
+
+[node name="SpawnTimer" type="Timer" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_peqwb")
+
+[connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
+[connection signal="timeout" from="SpawnTimer" to="." method="_rand_zombie_spawn_location"]

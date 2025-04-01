@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://7ivvvgfj0yvg"]
+
+[node name="ProgramDirector" type="Node"]
+process_mode = 3

@@ -1,0 +1,114 @@
+[gd_scene load_steps=16 format=3 uid="uid://b8wemumw2e23l"]
+
+[ext_resource type="Script" path="res://Scenes/Player/slime_swordsman.gd" id="1_6x3ci"]
+[ext_resource type="PackedScene" uid="uid://bntat6vyp33nl" path="res://Scenes/PlayerWeapons/fist.tscn" id="2_aeyyr"]
+[ext_resource type="Texture2D" uid="uid://cblbaryy5r4v4" path="res://Art/Player/Blue/Blue5.png" id="3_mvnj7"]
+[ext_resource type="Shape2D" uid="uid://bdvphnaboshag" path="res://Scenes/Player/SwordsmanHitbox.tres" id="3_oavnw"]
+[ext_resource type="Texture2D" uid="uid://dj3w0hvlctqo4" path="res://Art/Player/Blue/Blue0.png" id="4_e1625"]
+[ext_resource type="Texture2D" uid="uid://kujq806y5k58" path="res://Art/Player/Blue/Blue1.png" id="5_midun"]
+[ext_resource type="Texture2D" uid="uid://dnkfgt1crjf4n" path="res://Art/Player/Blue/Blue2.png" id="6_80d08"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_chdws"]
+atlas = ExtResource("3_mvnj7")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_65ip4"]
+atlas = ExtResource("4_e1625")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a6gw4"]
+atlas = ExtResource("5_midun")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yd3jv"]
+atlas = ExtResource("6_80d08")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_loa2k"]
+atlas = ExtResource("4_e1625")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wfa21"]
+atlas = ExtResource("5_midun")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_528yk"]
+atlas = ExtResource("6_80d08")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_21tme"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_chdws")
+}],
+"loop": true,
+"name": &"Attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_65ip4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a6gw4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yd3jv")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_loa2k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wfa21")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_528yk")
+}],
+"loop": true,
+"name": &"Move",
+"speed": 5.0
+}]
+
+[node name="Swordsman" type="CharacterBody2D"]
+process_mode = 1
+z_as_relative = false
+y_sort_enabled = true
+scale = Vector2(0.5, 0.5)
+collision_layer = 3
+motion_mode = 1
+platform_wall_layers = 3
+script = ExtResource("1_6x3ci")
+fist = ExtResource("2_aeyyr")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+editor_description = "Pause? on ready & game over
+
+ability to take damage
+
+"
+sprite_frames = SubResource("SpriteFrames_21tme")
+animation = &"Move"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 69)
+rotation = 1.5708
+shape = ExtResource("3_oavnw")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 69)
+rotation = 1.5708
+shape = ExtResource("3_oavnw")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]

@@ -1,0 +1,207 @@
+[gd_scene load_steps=19 format=3 uid="uid://kwlcr8tkuw4g"]
+
+[ext_resource type="Script" path="res://Scenes/Zombies/zombie.gd" id="1_db7nc"]
+[ext_resource type="Texture2D" uid="uid://cgfx4qq42a1en" path="res://Art/Player/GreenBlue(FrameSeparated).png" id="2_ti10j"]
+[ext_resource type="Shape2D" uid="uid://bdvphnaboshag" path="res://Scenes/Player/SwordsmanHitbox.tres" id="3_y7npo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dvy7a"]
+atlas = ExtResource("2_ti10j")
+region = Rect2(768, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y5sk8"]
+atlas = ExtResource("2_ti10j")
+region = Rect2(0, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j5h18"]
+atlas = ExtResource("2_ti10j")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ffayq"]
+atlas = ExtResource("2_ti10j")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6fmcc"]
+atlas = ExtResource("2_ti10j")
+region = Rect2(512, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2n170"]
+atlas = ExtResource("2_ti10j")
+region = Rect2(255, 768, 255, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_87pkp"]
+atlas = ExtResource("2_ti10j")
+region = Rect2(255, 0, 255, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0jxh2"]
+atlas = ExtResource("2_ti10j")
+region = Rect2(0, 512, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1myoh"]
+atlas = ExtResource("2_ti10j")
+region = Rect2(256, 512, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8vuva"]
+atlas = ExtResource("2_ti10j")
+region = Rect2(512, 512, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3nme0"]
+atlas = ExtResource("2_ti10j")
+region = Rect2(256, 768, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yyqje"]
+atlas = ExtResource("2_ti10j")
+region = Rect2(512, 768, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ltb18"]
+atlas = ExtResource("2_ti10j")
+region = Rect2(768, 768, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rey31"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dvy7a")
+}],
+"loop": false,
+"name": &"Attack",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": false,
+"name": &"Dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y5sk8")
+}],
+"loop": false,
+"name": &"Hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j5h18")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ffayq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6fmcc")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2n170")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_87pkp")
+}],
+"loop": true,
+"name": &"Move",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0jxh2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1myoh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8vuva")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3nme0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yyqje")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ltb18")
+}],
+"loop": false,
+"name": &"Spawn",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8m4q1"]
+radius = 1981.2
+
+[node name="Zombie" type="CharacterBody2D"]
+process_mode = 1
+editor_description = "hello"
+z_as_relative = false
+y_sort_enabled = true
+position = Vector2(0, -35)
+scale = Vector2(0.5, 0.5)
+collision_layer = 3
+collision_mask = 3
+motion_mode = 1
+platform_wall_layers = 3
+script = ExtResource("1_db7nc")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_rey31")
+animation = &"Attack"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 69)
+rotation = 1.5708
+shape = ExtResource("3_y7npo")
+
+[node name="WaitToWander" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="WanderTimeLeft" type="Timer" parent="."]
+one_shot = true
+
+[node name="PlayerTouchedObserver" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerTouchedObserver"]
+position = Vector2(0, 69)
+rotation = 1.5708
+shape = ExtResource("3_y7npo")
+
+[node name="WeaponObserver" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WeaponObserver"]
+polygon = PackedVector2Array(104, -2, 104, 38, 100, 54, 92, 74, 82, 82, 60, 90, -64, 90, -86, 82, -94, 74, -94, 66, -100, 54, -104, 36, -104, -2, -100, -18, -92, -40, -84, -50, -50, -64, -10, -74, 20, -74, 52, -68, 84, -50, 92, -38, 98, -18)
+
+[node name="PlayerInSightObserver" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerInSightObserver"]
+position = Vector2(0, 69)
+rotation = 1.5708
+shape = SubResource("CircleShape2D_8m4q1")
+
+[node name="Wander" type="AudioStreamPlayer2D" parent="."]
+scale = Vector2(0.5, 0.5)
+
+[node name="Chasing" type="AudioStreamPlayer2D" parent="."]
+
+[node name="Hurt" type="AudioStreamPlayer2D" parent="."]
+
+[node name="Attack" type="AudioStreamPlayer2D" parent="."]
+
+[node name="Muerte" type="AudioStreamPlayer2D" parent="."]
+
+[connection signal="animation_changed" from="AnimatedSprite2D" to="." method="_anim_end_or_anim_change"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_anim_end_or_anim_change"]
+[connection signal="timeout" from="WaitToWander" to="." method="_lets_wander"]
+[connection signal="timeout" from="WanderTimeLeft" to="." method="_wait_to_wander_reset"]
+[connection signal="body_entered" from="PlayerTouchedObserver" to="." method="_attack"]
+[connection signal="body_entered" from="WeaponObserver" to="." method="_im_hit"]
+[connection signal="body_entered" from="PlayerInSightObserver" to="." method="_i_see_the_player"]
+[connection signal="body_exited" from="PlayerInSightObserver" to="." method="_i_lost_the_player"]

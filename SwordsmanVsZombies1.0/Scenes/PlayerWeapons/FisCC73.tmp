@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://bntat6vyp33nl"]
+
+[ext_resource type="Script" path="res://Scenes/fist.gd" id="1_cye0g"]
+[ext_resource type="Texture2D" uid="uid://cgfx4qq42a1en" path="res://Art/Player/GreenBlue(FrameSeparated).png" id="2_vmd4w"]
+[ext_resource type="AudioStream" uid="uid://djh7cqieoixqe" path="res://Art/SoundEffects/Swing.wav" id="3_gitvv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rim3p"]
+atlas = ExtResource("2_vmd4w")
+region = Rect2(768, 512, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wqh2h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rim3p")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wlk7s"]
+size = Vector2(48, 60)
+
+[node name="Area2D" type="Area2D"]
+position = Vector2(339, 307)
+script = ExtResource("1_cye0g")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 2
+sprite_frames = SubResource("SpriteFrames_wqh2h")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(8, -2)
+shape = SubResource("RectangleShape2D_wlk7s")
+
+[node name="HitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_gitvv")
