@@ -12,8 +12,13 @@ High score goal (needs display AND save feature to save old high scores, will ma
 infinitely respawning mobs (not 100% functionality yet, needs to be able to adaptively spawn only in valid positions)
 
 Future plans:
-Campaign
+Endless v1.0
+Campaign v2.0
+
+Version += 0.1/each features:
 More characters
 More Weapons
 More zombies
+
+Version += 0.3
 More maps
