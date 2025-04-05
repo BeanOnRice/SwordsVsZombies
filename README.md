@@ -1,4 +1,4 @@
-Made in Godot 4.3test
+Made in Godot 4.3
 
 Project state at moment of repository creation:
 
