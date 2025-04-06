@@ -1,11 +1,7 @@
 @icon("res://Art/Player/Blue/Blue0.png")
+##Player Character
 class_name PlayerCharacter
-
 extends CharacterBody2D
-################################################DEPENDANCY LIST
-#updates player_stats.gd(singleton)
-	#same .gd can be used to fluidly change weapon, movement speed, actual dmg(dmg multiplier is here, ####### weapon base damage and weapon held lives in weapon class
-################################################DEPENDANCY LIST
 
 #local_stats (see CharacterStats in swordsman.gd)
 
